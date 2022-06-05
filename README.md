@@ -18,7 +18,7 @@ Select your development platform (Android/iOS) and click [Switch Platform].
 ## API Key
 [Edit]->[ProjectSettings]->[XR Plug-in Management]->[ARCore Extensions]
 <br>
-Enter a API key created on Google Cloud Platform.
+Enter an API key created on Google Cloud Platform.
 <br>
 <img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka-20220604/Materials/api.png" width="320" />
 <br>

@@ -7,7 +7,7 @@
 ## 1-PlacingObjectAt_LatLngAlt
 UnityEditorのInspector上で指定した緯度・経度・高度にオブジェクトを表示します<br>
 <img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka-20220604/Materials/1-demo.png" width="320" />
-<br><br>
+<br><br><br>
 
 # 各自で行う設定事項
 ## Build設定
@@ -21,7 +21,6 @@ UnityEditorのInspector上で指定した緯度・経度・高度にオブジェ
 Google Cloud Platformで作成したAPIキーを入力。
 <br>
 <img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka-20220604/Materials/api.png" width="320" />
-
 <br>
 API Keyの作り方は下記資料のGoogleCloud Platformの設定を参照。
 <br>

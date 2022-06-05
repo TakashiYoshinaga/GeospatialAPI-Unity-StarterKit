@@ -1,34 +1,34 @@
 # GeospatialAPI-Unity-StarterKit
-# サンプル
-## 0-TrackingStateMonitoring
-緯度・経度・高度・方位と精度が表示されます<br>
+## SampleScenes
+### 0-TrackingStateMonitoring
+The latitude, longitude, altitude, and azimuth of your smartphone and the accuracy of these are displayed on a screen.<br>
 <img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka-20220604/Materials/0-demo.png" width="320" />
 
-## 1-PlacingObjectAt_LatLngAlt
-UnityEditorのInspector上で指定した緯度・経度・高度にオブジェクトを表示します<br>
+### 1-PlacingObjectAt_LatLngAlt
+Show a object with AR at the latitude, longitude, and altitude specified on the Inspector in UnityEditor.<br>
 <img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka-20220604/Materials/1-demo.png" width="320" />
 <br><br><br>
 
-# 各自で行う設定事項
-## Build設定
+# Setup items to be done by each
+## Build Setting
 [File]->[BuildSettings]
 <br>
-開発プラットフォーム(Android/iOS)を選択して[Switch Platform]をクリック。
+Select your development platform (Android/iOS) and click [Switch Platform].
 <br>
-## API Key設定
+## API Key
 [Edit]->[ProjectSettings]->[XR Plug-in Management]->[ARCore Extensions]
 <br>
-Google Cloud Platformで作成したAPIキーを入力。
+Enter a API key created on Google Cloud Platform.
 <br>
 <img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka-20220604/Materials/api.png" width="320" />
 <br>
-API Keyの作り方は下記資料のGoogleCloud Platformの設定を参照。
+See [Set up a Google Cloud Project] of the official website for how to create an API Key.
 <br>
-https://github.com/TakashiYoshinaga/AR-Fukuoka/raw/main/GeospatialAPI_20220604/geospatial_preparation.pdf
+https://developers.google.com/ar/develop/c/geospatial/developer-guide
 <br>
 
-## オブジェクトの表示位置設定
-1-PlacingObjectAt_LatLngAltを試す場合、VPS_Demoオブジェクトのインスペクタ上で緯度・経度・高さを指定。<br>
-高さはひとまずジオイド高+標高で計算してみましょう。下記資料の最後の数ページに方法は記載しています。<br>
-https://www.docswell.com/s/Tks_Yoshinaga/Z86Q2K-geospatial-api
-
+## Set latitude and longitude to display objects
+If you try the scene named 1-PlacingObjectAt_LatLngAlt , you need to specify the latitude, longitude and height on the VPS_Demo object inspector.<br>
+Height should be calculated as geoid height + elevation.<br>
+[GeoidCalculator]<br>
+https://geographiclib.sourceforge.io/cgi-bin/GeoidEval

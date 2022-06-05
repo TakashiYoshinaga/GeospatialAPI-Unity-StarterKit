@@ -2,11 +2,11 @@
 # サンプル
 ## 0-TrackingStateMonitoring
 緯度・経度・高度・方位と精度が表示されます<br>
-<img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka/Materials/0-demo.png" width="320" />
+<img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka-20220604/Materials/0-demo.png" width="320" />
 
 ## 1-PlacingObjectAt_LatLngAlt
 UnityEditorのInspector上で指定した緯度・経度・高度にオブジェクトを表示します<br>
-<img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka/Materials/1-demo.png" width="320" />
+<img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka-20220604/Materials/1-demo.png" width="320" />
 
 
 # 各自で行う設定事項
@@ -20,7 +20,8 @@ UnityEditorのInspector上で指定した緯度・経度・高度にオブジェ
 <br>
 Google Cloud Platformで作成したAPIキーを入力。
 <br>
-<img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka/Materials/api.png" width="320" />
+<img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka-20220604/Materials/api.png" width="320" />
+
 <br>
 API Keyの作り方は下記資料のGoogleCloud Platformの設定を参照。
 <br>

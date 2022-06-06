@@ -1,4 +1,4 @@
-# GeospatialAPI-Unity-StarterKit
+# ARCore GeospatialAPI-Unity-StarterKit
 # サンプル
 ## 0-TrackingStateMonitoring
 緯度・経度・高度・方位と精度が表示されます<br>

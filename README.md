@@ -1,4 +1,4 @@
-# GeospatialAPI-Unity-StarterKit
+# ARCore GeospatialAPI Unity StarterKit
 ## SampleScenes
 ### 0-TrackingStateMonitoring
 The latitude, longitude, altitude, and azimuth of your smartphone and the accuracy of these are displayed on a screen.<br>

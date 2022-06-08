@@ -35,9 +35,9 @@ https://geographiclib.sourceforge.io/cgi-bin/GeoidEval
 
 [elevetion]
 Please search app or web service to provide elevation at the specified point of your country.
+<br><br>
 
-
-# Slide deck
+# Slide deck of tutorial
 I held a tutorial event about how to use ARCore Geospatial API in Japan.<br>
 A part of tutorial was translated into English. It'll be great if it's helpful for your studying.<br>
 https://www.docswell.com/s/Tks_Yoshinaga/5664V5-geospatial-api-en

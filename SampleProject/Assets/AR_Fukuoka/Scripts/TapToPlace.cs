@@ -81,7 +81,7 @@ namespace AR_Fukuoka
         return;
     }
 #endif
-            if (Input.touchCount == 0 || Input.GetTouch(0).phase != TouchPhase.Ended || displayObject == null)
+            if (Input.touchCount == 0 || Input.GetTouch(0).phase != TouchPhase.Began || displayObject == null)
             {
                 return;
             }

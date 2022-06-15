@@ -42,7 +42,7 @@ namespace AR_Fukuoka
             {
                 return;
             }
-           
+
             string status = "";
             //Get tracking results
             GeospatialPose pose = EarthManager.CameraGeospatialPose;
@@ -81,7 +81,7 @@ namespace AR_Fukuoka
         return;
     }
 #endif
-            if (Input.touchCount == 0 || Input.GetTouch(0).phase != TouchPhase.Began || displayObject == null)
+            if (Input.touchCount == 0 || Input.GetTouch(0).phase != TouchPhase.Ended || displayObject == null)
             {
                 return;
             }
@@ -90,10 +90,10 @@ namespace AR_Fukuoka
             if (RaycastManager.Raycast(Input.GetTouch(0).position, hits, TrackableType.PlaneWithinPolygon))
             {
                 //Place and anchoring displayObject. 
-                StartCoroutine(AnchoringAndSave(hits[0],displayObject.transform,pose));
+                StartCoroutine(AnchoringAndSave(hits[0], displayObject.transform, pose));
             }
         }
-        IEnumerator AnchoringAndSave(ARRaycastHit hit,Transform displayObjTransform,GeospatialPose pose)
+        IEnumerator AnchoringAndSave(ARRaycastHit hit, Transform displayObjTransform, GeospatialPose pose)
         {
             Pose hitPose = hit.pose;
             displayObjTransform.position = hitPose.position;
@@ -164,7 +164,8 @@ namespace AR_Fukuoka
                status //{7}
            );
         }
-        public void QuitApp() {
+        public void QuitApp()
+        {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else

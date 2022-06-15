@@ -10,7 +10,8 @@ Show a object with AR at the latitude, longitude, and altitude specified on the 
 
 ### 2-TapToPlace
 Placement of object and saving its latitude, longitude, and altitude and local position.<br>
-<br><br><br>
+[![](https://img.youtube.com/vi/2O2_O5hTguc/0.jpg)](https://www.youtube.com/watch?v=2O2_O5hTguc)
+<br><br>
 
 # Setup items to be done by each
 ## Build Setting

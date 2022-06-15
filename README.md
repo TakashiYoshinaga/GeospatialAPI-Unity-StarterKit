@@ -11,6 +11,7 @@ Show a object with AR at the latitude, longitude, and altitude specified on the 
 ### 2-TapToPlace
 Placement of a object and saving its latitude, longitude, and altitude and local position.<br>
 Reproduction of position of a object at the same position of the real world.<br>
+Click below to play demo video.<br>
 [![](https://img.youtube.com/vi/2O2_O5hTguc/0.jpg)](https://www.youtube.com/watch?v=2O2_O5hTguc)
 <br><br>
 

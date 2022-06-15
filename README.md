@@ -39,7 +39,7 @@ Height should be calculated as geoid height + elevation.<br>
 [GeoidCalculator]<br>
 https://geographiclib.sourceforge.io/cgi-bin/GeoidEval
 
-[elevetion]
+[elevetion]<br>
 Please search app or web service to provide elevation at the specified point of your country.
 <br><br>
 

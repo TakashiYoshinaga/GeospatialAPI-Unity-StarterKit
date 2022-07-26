@@ -15,7 +15,7 @@ Click below to play the demo video.<br>
 [![](https://img.youtube.com/vi/2O2_O5hTguc/0.jpg)](https://www.youtube.com/watch?v=2O2_O5hTguc)
 <br><br>
 
-# Setup items to be done by each
+# Required Setup
 ## Build Setting
 [File]->[BuildSettings]
 <br>

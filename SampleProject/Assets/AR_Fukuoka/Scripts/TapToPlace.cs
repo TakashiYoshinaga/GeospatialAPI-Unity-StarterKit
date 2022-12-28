@@ -47,7 +47,7 @@ namespace AR_Fukuoka
             //Get tracking results
             GeospatialPose pose = EarthManager.CameraGeospatialPose;
             if (
-               pose.HeadingAccuracy > HeadingThreshold ||
+               pose.OrientationYawAccuracy > HeadingThreshold ||
                pose.HorizontalAccuracy > HorizontalThreshold)
             {
                 status = "Low Accuracy：Look around the area.";
@@ -100,7 +100,15 @@ namespace AR_Fukuoka
 
             //Create a rotation quaternion that has the +Z axis pointing in the same direction as the heading value (heading=0 means north direction)
             //https://developers.google.com/ar/develop/unity-arf/geospatial/developer-guide-android#place_a_geospatial_anchor
-            Quaternion quaternion = Quaternion.AngleAxis(180f - (float)pose.Heading, Vector3.up);
+            //Quaternion quaternion = Quaternion.AngleAxis(180f - (float)pose.Heading, Vector3.up);
+            Quaternion quaternion = pose.EunRotation;
+#if UNITY_IOS
+            // Update the quaternion from landscape orientation to portrait orientation.
+            if(Screen.orientation==ScreenOrientation.Portrait ||Screen.orientation==ScreenOrientation.PortraitUpsideDown ){
+                Quaternion q = Quaternion.Euler(Vector3.forward * 90);
+                quaternion = quaternion * q;
+            }
+#endif
             //Generate an anchor.
             ARGeospatialAnchor anchor = AnchorManager.AddAnchor(pose.Latitude, pose.Longitude, pose.Altitude, quaternion);
             //After anchor generation, the position of the object relative to the anchor is determined and saved.
@@ -159,8 +167,8 @@ namespace AR_Fukuoka
                pose.HorizontalAccuracy.ToString("F6"), //{2}
                pose.Altitude.ToString("F2"),  //{3}
                pose.VerticalAccuracy.ToString("F2"),  //{4}
-               pose.Heading.ToString("F1"),   //{5}
-               pose.HeadingAccuracy.ToString("F1"),   //{6}
+               pose.EunRotation.ToString("F1"),   //{5}
+               pose.OrientationYawAccuracy.ToString("F1"),   //{6}
                status //{7}
            );
         }

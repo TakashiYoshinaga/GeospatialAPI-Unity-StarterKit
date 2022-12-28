@@ -49,7 +49,7 @@ namespace AR_Fukuoka
             //トラッキング結果を取得
             GeospatialPose pose = EarthManager.CameraGeospatialPose;
             //トラッキング精度がthresholdより悪い(値が大きい)場合
-            if (pose.HeadingAccuracy > HeadingThreshold ||
+            if (pose.OrientationYawAccuracy > HeadingThreshold ||
                   pose.HorizontalAccuracy > HorizontalThreshold)
             {
                 status = "低精度：周辺を見回してください";
@@ -106,8 +106,8 @@ namespace AR_Fukuoka
                pose.HorizontalAccuracy.ToString("F6"), //{2}
                pose.Altitude.ToString("F2"),  //{3}
                pose.VerticalAccuracy.ToString("F2"),  //{4}
-               pose.Heading.ToString("F1"),   //{5}
-               pose.HeadingAccuracy.ToString("F1"),   //{6}
+               pose.EunRotation.ToString("F1"),   //{5}
+               pose.OrientationYawAccuracy.ToString("F1"),   //{6}
                status //{7}
            );
         }

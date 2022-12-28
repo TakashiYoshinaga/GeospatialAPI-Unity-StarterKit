@@ -58,7 +58,7 @@ namespace AR_Fukuoka
                 if (!initialized)
                 {
                     initialized = true;
-                    LoadAndCreateObject();
+                    StartCoroutine( LoadAndCreateObject());
                 }
                 else
                 {
@@ -102,6 +102,7 @@ namespace AR_Fukuoka
             //https://developers.google.com/ar/develop/unity-arf/geospatial/developer-guide-android#place_a_geospatial_anchor
             //Quaternion quaternion = Quaternion.AngleAxis(180f - (float)pose.Heading, Vector3.up);
             Quaternion quaternion = pose.EunRotation;
+            
 #if UNITY_IOS
             // Update the quaternion from landscape orientation to portrait orientation.
             if(Screen.orientation==ScreenOrientation.Portrait ||Screen.orientation==ScreenOrientation.PortraitUpsideDown ){
@@ -131,17 +132,25 @@ namespace AR_Fukuoka
                 PlayerPrefs.Save();
             }
         }
-        void LoadAndCreateObject()
+        IEnumerator LoadAndCreateObject()
         {
             displayObject = Instantiate(ContentPrefab);
             //Put object 4m forward tentively
             displayObject.transform.position = new Vector3(0, 0, 4);
-
+            displayObject.transform.rotation=Quaternion.identity;
             if (PlayerPrefs.HasKey(anchorKey) && PlayerPrefs.HasKey(positionKey))
             {
                 GeospatialAnchorHistory history = JsonUtility.FromJson<GeospatialAnchorHistory>(PlayerPrefs.GetString(anchorKey));
-                Quaternion quaternion = Quaternion.AngleAxis(180f - (float)history.Heading, Vector3.up);
-                ARGeospatialAnchor anchor = AnchorManager.AddAnchor(history.Latitude, history.Longitude, history.Altitude, quaternion);
+                Quaternion quaternion = history.EunRotation;//Quaternion.AngleAxis(180f - (float)history.Heading, Vector3.up);
+#if UNITY_IOS
+                // Update the quaternion from landscape orientation to portrait orientation.
+                if(Screen.orientation==ScreenOrientation.Portrait ||Screen.orientation==ScreenOrientation.PortraitUpsideDown ){
+                    Quaternion q = Quaternion.Euler(Vector3.forward * 90);
+                    quaternion = quaternion * q;
+                }
+#endif
+                ARGeospatialAnchor anchor = AnchorManager.AddAnchor(history.Latitude, history.Longitude, history.Altitude, quaternion);          
+                yield return new WaitForSeconds(0.5f);//null;
                 if (anchor != null)
                 {
                     displayObject.transform.SetParent(anchor.transform);

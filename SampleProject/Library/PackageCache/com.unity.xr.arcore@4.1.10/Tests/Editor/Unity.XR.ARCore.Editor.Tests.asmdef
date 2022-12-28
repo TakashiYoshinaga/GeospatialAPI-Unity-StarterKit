@@ -1,0 +1,13 @@
+{
+  "name": "Unity.XR.ARCore.Editor.Tests",
+    "references": [
+        "Unity.XR.ARCore.Editor"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

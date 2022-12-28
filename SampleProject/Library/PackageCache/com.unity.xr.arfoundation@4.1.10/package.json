@@ -1,0 +1,33 @@
+{
+  "name": "com.unity.xr.arfoundation",
+  "displayName": "AR Foundation",
+  "version": "4.1.10",
+  "unity": "2019.4",
+  "description": "A collection of MonoBehaviours and C# utilities for working with AR Subsystems. \n\nIncludes: \n▪ GameObject menu items for creating an AR setup \n▪ MonoBehaviours that control AR session lifecycle and create GameObjects from detected, real-world trackable features \n▪ Scale handling \n▪ Face tracking\n\nSamples available at https://github.com/Unity-Technologies/arfoundation-samples",
+  "keywords": [
+    "xr",
+    "ar",
+    "augmented",
+    "reality",
+    "utility",
+    "utilities",
+    "foundation",
+    "core"
+  ],
+  "dependencies": {
+    "com.unity.xr.arsubsystems": "4.1.10",
+    "com.unity.xr.management": "4.0.1",
+    "com.unity.modules.particlesystem": "1.0.0"
+  },
+  "upm": {
+    "changelog": "### Fixes,- Fixed [issue 1392753](https://issuetracker.unity3d.com/issues/flickering-slash-frozen-textures-when-ar-occlusion-manager-is-disabled) where occlusion texture would remain frozen instead of being cleared when the occlusion manager is disabled.,- Fixed an issue where creating an [ARSessionOrigin](xref:UnityEngine.XR.ARFoundation.ARSessionOrigin) would not tag the newly created camera as \"MainCamera\"."
+  },
+  "upmCi": {
+    "footprint": "e89926e914e1cbcfa8ab4d591896eebc4cb57e38"
+  },
+  "repository": {
+    "url": "https://github.cds.internal.unity3d.com/unity/arfoundation.git",
+    "type": "git",
+    "revision": "68e960c87558b909d246af7c03a5c51777e937e0"
+  }
+}

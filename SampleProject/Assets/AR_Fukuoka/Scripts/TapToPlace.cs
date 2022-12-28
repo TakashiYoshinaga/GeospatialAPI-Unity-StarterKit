@@ -116,7 +116,7 @@ namespace AR_Fukuoka
             if (anchor != null)
             {
                 //Wait a bit because orientation is not stable for a few frames after the anchor is made.
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(1.0f);
                 //Set parent-child relationship between object and anchor, then discard old anchor
                 Transform prevAnchor = displayObjTransform.parent;
                 displayObjTransform.SetParent(anchor.transform);
@@ -152,7 +152,7 @@ namespace AR_Fukuoka
                 ARGeospatialAnchor anchor = AnchorManager.AddAnchor(history.Latitude, history.Longitude, history.Altitude, quaternion);          
                 if (anchor != null)
                 {
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSeconds(1.0f);
                     displayObject.transform.SetParent(anchor.transform);
                     displayObject.transform.localPosition = JsonUtility.FromJson<Vector3>(PlayerPrefs.GetString(positionKey));
                 }

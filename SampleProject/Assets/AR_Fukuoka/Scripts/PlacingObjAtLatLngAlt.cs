@@ -26,7 +26,7 @@ namespace AR_Fukuoka
         [SerializeField] double Longitude;
         //オブジェクトを置く高さ[m] (ジオイド高+標高。求め方はAR_Fukuoka/elevation.txtを参照)
         [SerializeField] double Altitude;
-        [SerializeField] bool ForceDefaultAltitude = false;
+        [SerializeField] bool ForcePutOnTerrain = false;
         //オブジェクトの向き(北=0°)
         [SerializeField] double Heading;
         //表示オブジェクトの元データ
@@ -73,18 +73,16 @@ namespace AR_Fukuoka
         //表示オブジェクトを実際に登場させる
         void SpawnObject(GeospatialPose pose,GameObject prefab)
         {
-            //スマホの高さ-1.5mでおよそ地面の高さとする(tentatively)
-            if(ForceDefaultAltitude){
-                Altitude = pose.Altitude - 1.5f;
-            }
             //角度の補正
             //Create a rotation quaternion that has the +Z axis pointing in the same direction as the heading value (heading=0 means north direction)
             //https://developers.google.com/ar/develop/unity-arf/geospatial/developer-guide-android#place_a_geospatial_anchor
             Quaternion quaternion = Quaternion.AngleAxis(180f - (float)Heading, Vector3.up);
 
             //指定した位置・向きのアンカーを作成
-            ARGeospatialAnchor anchor = AnchorManager.AddAnchor(Latitude, Longitude, Altitude, quaternion);
-
+            ARGeospatialAnchor anchor = ForcePutOnTerrain ?
+                AnchorManager.ResolveAnchorOnTerrain(Latitude, Longitude, 0, quaternion) :
+                AnchorManager.AddAnchor(Latitude, Longitude, Altitude, quaternion);
+            
             //アンカーが正しく作られていればオブジェクトを実体化
             if (anchor != null)
             {

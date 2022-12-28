@@ -150,9 +150,9 @@ namespace AR_Fukuoka
                 }
 #endif
                 ARGeospatialAnchor anchor = AnchorManager.AddAnchor(history.Latitude, history.Longitude, history.Altitude, quaternion);          
-                yield return new WaitForSeconds(0.5f);//null;
                 if (anchor != null)
                 {
+                    yield return new WaitForSeconds(0.5f);
                     displayObject.transform.SetParent(anchor.transform);
                     displayObject.transform.localPosition = JsonUtility.FromJson<Vector3>(PlayerPrefs.GetString(positionKey));
                 }

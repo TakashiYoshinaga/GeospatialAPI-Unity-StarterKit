@@ -1,6 +1,6 @@
 # ARCore GeospatialAPI Unity StarterKit
 ## SDK
-This sample is compatible with ARCore Extensions for AR Foundation v1.35.0. <br>
+This sample project is compatible with ARCore Extensions for AR Foundation v1.35.0. <br>
 https://github.com/google-ar/arcore-unity-extensions/releases/tag/v1.35.0
 ## SampleScenes
 ### 0-TrackingStateMonitoring

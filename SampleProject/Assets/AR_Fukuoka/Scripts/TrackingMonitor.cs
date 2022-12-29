@@ -8,40 +8,40 @@ namespace AR_Fukuoka
 {
     public class TrackingMonitor : MonoBehaviour
     {
-        //GeospatialAPIを用いたトラッキング情報
+        //Tracking information using GeospatialAPI
         [SerializeField] AREarthManager EarthManager;
-        //GeospatialAPIとARCoreの初期化と結果
+        //Used for initializing ARCore and GeospatialAPI
         [SerializeField] VpsInitializer Initializer;
-        //結果表示用のUI 
+        //UI for displaying the tracking result
         [SerializeField] Text OutputText;
-        //方位の許容精度(値の変更はInspectorから)
+        //Heading accuracy (change the value in the Inspector)
         [SerializeField] double HeadingThreshold = 25;
-        //水平位置の許容精度(値の変更はInspectorから)
+        //Horizontal position accuracy (change the value in the Inspector)
         [SerializeField] double HorizontalThreshold = 20;
 
         // Update is called once per frame
         void Update()
         {        
-            //初期化失敗またはトラッキングができていない場合は何もしないで戻る
+            //Return if initialization failed or tracking is not available
             if (!Initializer.IsReady || EarthManager.EarthTrackingState != TrackingState.Tracking)
             {
                 return;
             }
-            //トラッキングの状態を表示する際に使用
+            //Tracking status to be displayed
             string status = "";
-            //トラッキング結果を取得
+            //Get the tracking result
             GeospatialPose pose = EarthManager.CameraGeospatialPose;
-            //トラッキング精度がthresholdより悪い(値が大きい)場合
+            //The case where the tracking accuracy is worse than the threshold (the value is large)
             if (pose.OrientationYawAccuracy > HeadingThreshold ||
                  pose.HorizontalAccuracy > HorizontalThreshold)
             {
-                status = "低精度：周辺を見回してください";
+                status = "Low Tracking Accuracy： Please look arround.";
             }
-            else //許容誤差以内の場合
+            else //The case where the tracking accuracy is better than the threshold (the value is small)
             {
-                status = "高精度：High Tracking Accuracy";
+                status = "High Tracking Accuracy";
             }
-            //結果を表示
+            //Show the result
             ShowTrackingInfo(status, pose);
         }
 

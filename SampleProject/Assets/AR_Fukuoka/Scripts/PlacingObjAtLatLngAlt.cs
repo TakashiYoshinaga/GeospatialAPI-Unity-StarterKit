@@ -9,80 +9,82 @@ namespace AR_Fukuoka
 {
     public class PlacingObjAtLatLngAlt : MonoBehaviour
     {
-        //GeospatialAPIを用いたトラッキング情報
+         //Tracking information using GeospatialAPI
         [SerializeField] AREarthManager EarthManager;
-        //GeospatialAPIとARCoreの初期化と結果
+        //Used for initializing ARCore and GeospatialAPI
         [SerializeField] VpsInitializer Initializer;
-        //結果表示用のUI 
+        //UI for displaying the tracking result
         [SerializeField] Text OutputText;
-        //方位の許容精度(値の変更はInspectorから)
+        //Heading accuracy (change the value in the Inspector)
         [SerializeField] double HeadingThreshold = 25;
-        //水平位置の許容精度(値の変更はInspectorから)
+        //Horizontal position accuracy (change the value in the Inspector)
         [SerializeField] double HorizontalThreshold = 20;
 
-        //オブジェクトを置く緯度
+        //Latitude of the object to be placed
         [SerializeField] double Latitude;
-        //オブジェクトを置く経度
+        //Longitude of the object to be placed
         [SerializeField] double Longitude;
-        //オブジェクトを置く高さ[m] (ジオイド高+標高。求め方はAR_Fukuoka/elevation.txtを参照)
+        //Altitude of the object to be placed [m] (geoid height + elevation. See AR_Fukuoka/elevation.txt for how to calculate)
         [SerializeField] double Altitude;
-        //オブジェクトの向き(北=0°)
+        //Flag to force the object to be placed on the ground. (If false, the object will be placed at the altitude specified by Altitude)
+        [SerializeField] bool ForcePutOnTerrain = false;
+        //Heading of the object (North = 0°)
         [SerializeField] double Heading;
-        //表示オブジェクトの元データ
+        //The original data of the object to be displayed
         [SerializeField] GameObject ContentPrefab;
-        //実際に表示するオブジェクト
+        //The object to be displayed
         GameObject displayObject;
-        //アンカー作成に使用
+        //Manager for creating anchors
         [SerializeField] ARAnchorManager AnchorManager;
         bool initialized = false;
+        
 
         // Update is called once per frame
         void Update()
         {
-            //初期化失敗またはトラッキングができていない場合は何もしないで戻る
+            //Return if initialization failed or tracking is not available
             if (!Initializer.IsReady || EarthManager.EarthTrackingState != TrackingState.Tracking)
             {
                 return;
             }
-            //トラッキングの状態を表示する際に使用
+            //Tracking status to be displayed
             string status = "";
-            //トラッキング結果を取得
+            //Get the tracking result
             GeospatialPose pose = EarthManager.CameraGeospatialPose;
-            //トラッキング精度がthresholdより悪い(値が大きい)場合
-            if (pose.HeadingAccuracy > HeadingThreshold ||
+            //The case where the tracking accuracy is worse than the threshold (the value is large)
+            if (pose.OrientationYawAccuracy > HeadingThreshold ||
                   pose.HorizontalAccuracy > HorizontalThreshold)
             {
-                status = "低精度：周辺を見回してください";
+                status = "Low Tracking Accuracy： Please look arround.";
             }
             else
             {
-                status = "高精度：High Tracking Accuracy";
+                status = "High Tracking Accuracy";
                 if (!initialized)
                 {
                     initialized = true;
-                    //表示オブジェクトを実際に登場させる
+                    //Create and place a virtual object.
                     SpawnObject(pose, ContentPrefab);
                 }
             }
-            //結果を表示
+            //Display the tracking result
             ShowTrackingInfo(status, pose);
         }
 
-        //表示オブジェクトを実際に登場させる
+        //Instantiate the object to be displayed
         void SpawnObject(GeospatialPose pose,GameObject prefab)
         {
-            //スマホの高さ-1.5mでおよそ地面の高さとする(tentatively)
-            Altitude = pose.Altitude - 1.5f;
-
             //角度の補正
             //Create a rotation quaternion that has the +Z axis pointing in the same direction as the heading value (heading=0 means north direction)
             //https://developers.google.com/ar/develop/unity-arf/geospatial/developer-guide-android#place_a_geospatial_anchor
             Quaternion quaternion = Quaternion.AngleAxis(180f - (float)Heading, Vector3.up);
 
-            //指定した位置・向きのアンカーを作成
-            ARGeospatialAnchor anchor = AnchorManager.AddAnchor(Latitude, Longitude, Altitude, quaternion);
-
-            //アンカーが正しく作られていればオブジェクトを実体化
+            //Create an anchor at the specified latitude, longitude, and altitude
+            ARGeospatialAnchor anchor = ForcePutOnTerrain ?
+                AnchorManager.ResolveAnchorOnTerrain(Latitude, Longitude, 0, quaternion) :
+                AnchorManager.AddAnchor(Latitude, Longitude, Altitude, quaternion);
+            
+            //Instantiate the object if the anchor is created successfully
             if (anchor != null)
             {
                 displayObject = Instantiate(ContentPrefab, anchor.transform);
@@ -106,8 +108,8 @@ namespace AR_Fukuoka
                pose.HorizontalAccuracy.ToString("F6"), //{2}
                pose.Altitude.ToString("F2"),  //{3}
                pose.VerticalAccuracy.ToString("F2"),  //{4}
-               pose.Heading.ToString("F1"),   //{5}
-               pose.HeadingAccuracy.ToString("F1"),   //{6}
+               pose.EunRotation.ToString("F1"),   //{5}
+               pose.OrientationYawAccuracy.ToString("F1"),   //{6}
                status //{7}
            );
         }

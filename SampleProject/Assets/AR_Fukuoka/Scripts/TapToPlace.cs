@@ -47,7 +47,7 @@ namespace AR_Fukuoka
             //Get tracking results
             GeospatialPose pose = EarthManager.CameraGeospatialPose;
             if (
-               pose.HeadingAccuracy > HeadingThreshold ||
+               pose.OrientationYawAccuracy > HeadingThreshold ||
                pose.HorizontalAccuracy > HorizontalThreshold)
             {
                 status = "Low Accuracy：Look around the area.";
@@ -58,7 +58,7 @@ namespace AR_Fukuoka
                 if (!initialized)
                 {
                     initialized = true;
-                    LoadAndCreateObject();
+                    StartCoroutine( LoadAndCreateObject());
                 }
                 else
                 {
@@ -100,14 +100,23 @@ namespace AR_Fukuoka
 
             //Create a rotation quaternion that has the +Z axis pointing in the same direction as the heading value (heading=0 means north direction)
             //https://developers.google.com/ar/develop/unity-arf/geospatial/developer-guide-android#place_a_geospatial_anchor
-            Quaternion quaternion = Quaternion.AngleAxis(180f - (float)pose.Heading, Vector3.up);
+            //Quaternion quaternion = Quaternion.AngleAxis(180f - (float)pose.Heading, Vector3.up);
+            Quaternion quaternion = pose.EunRotation;
+            
+#if UNITY_IOS
+            // Update the quaternion from landscape orientation to portrait orientation.
+            if(Screen.orientation==ScreenOrientation.Portrait ||Screen.orientation==ScreenOrientation.PortraitUpsideDown ){
+                Quaternion q = Quaternion.Euler(Vector3.forward * 90);
+                quaternion = quaternion * q;
+            }
+#endif
             //Generate an anchor.
             ARGeospatialAnchor anchor = AnchorManager.AddAnchor(pose.Latitude, pose.Longitude, pose.Altitude, quaternion);
             //After anchor generation, the position of the object relative to the anchor is determined and saved.
             if (anchor != null)
             {
                 //Wait a bit because orientation is not stable for a few frames after the anchor is made.
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(1.0f);
                 //Set parent-child relationship between object and anchor, then discard old anchor
                 Transform prevAnchor = displayObjTransform.parent;
                 displayObjTransform.SetParent(anchor.transform);
@@ -117,25 +126,33 @@ namespace AR_Fukuoka
                 }
 
                 //保存
-                GeospatialAnchorHistory history = new GeospatialAnchorHistory(pose.Latitude, pose.Longitude, pose.Altitude, pose.Heading);
+                GeospatialAnchorHistory history = new GeospatialAnchorHistory(pose.Latitude, pose.Longitude, pose.Altitude, pose.EunRotation);
                 PlayerPrefs.SetString(positionKey, JsonUtility.ToJson(displayObjTransform.localPosition));
                 PlayerPrefs.SetString(anchorKey, JsonUtility.ToJson(history));
                 PlayerPrefs.Save();
             }
         }
-        void LoadAndCreateObject()
+        IEnumerator LoadAndCreateObject()
         {
             displayObject = Instantiate(ContentPrefab);
             //Put object 4m forward tentively
             displayObject.transform.position = new Vector3(0, 0, 4);
-
+            displayObject.transform.rotation=Quaternion.identity;
             if (PlayerPrefs.HasKey(anchorKey) && PlayerPrefs.HasKey(positionKey))
             {
                 GeospatialAnchorHistory history = JsonUtility.FromJson<GeospatialAnchorHistory>(PlayerPrefs.GetString(anchorKey));
-                Quaternion quaternion = Quaternion.AngleAxis(180f - (float)history.Heading, Vector3.up);
-                ARGeospatialAnchor anchor = AnchorManager.AddAnchor(history.Latitude, history.Longitude, history.Altitude, quaternion);
+                Quaternion quaternion = history.EunRotation;//Quaternion.AngleAxis(180f - (float)history.Heading, Vector3.up);
+#if UNITY_IOS
+                // Update the quaternion from landscape orientation to portrait orientation.
+                if(Screen.orientation==ScreenOrientation.Portrait ||Screen.orientation==ScreenOrientation.PortraitUpsideDown ){
+                    Quaternion q = Quaternion.Euler(Vector3.forward * 90);
+                    quaternion = quaternion * q;
+                }
+#endif
+                ARGeospatialAnchor anchor = AnchorManager.AddAnchor(history.Latitude, history.Longitude, history.Altitude, quaternion);          
                 if (anchor != null)
                 {
+                    yield return new WaitForSeconds(1.0f);
                     displayObject.transform.SetParent(anchor.transform);
                     displayObject.transform.localPosition = JsonUtility.FromJson<Vector3>(PlayerPrefs.GetString(positionKey));
                 }
@@ -159,8 +176,8 @@ namespace AR_Fukuoka
                pose.HorizontalAccuracy.ToString("F6"), //{2}
                pose.Altitude.ToString("F2"),  //{3}
                pose.VerticalAccuracy.ToString("F2"),  //{4}
-               pose.Heading.ToString("F1"),   //{5}
-               pose.HeadingAccuracy.ToString("F1"),   //{6}
+               pose.EunRotation.ToString("F1"),   //{5}
+               pose.OrientationYawAccuracy.ToString("F1"),   //{6}
                status //{7}
            );
         }

@@ -1,14 +1,15 @@
 {
   "dependencies": {
     "com.google.ar.core.arfoundation.extensions": {
-      "version": "file:arcore-unity-extensions.tgz",
+      "version": "https://github.com/google-ar/arcore-unity-extensions.git",
       "depth": 0,
-      "source": "local-tarball",
+      "source": "git",
       "dependencies": {
         "com.unity.xr.arfoundation": "4.1.5",
         "com.unity.xr.arcore": "4.1.5",
         "com.unity.xr.arkit": "4.1.5"
-      }
+      },
+      "hash": "404c696d5790cd405ab6a64294e08d887d4e8409"
     },
     "com.unity.editorcoroutines": {
       "version": "1.0.0",
@@ -100,11 +101,11 @@
       }
     },
     "com.unity.xr.arcore": {
-      "version": "4.1.10",
+      "version": "4.1.13",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.xr.arsubsystems": "4.1.10",
+        "com.unity.xr.arsubsystems": "4.1.13",
         "com.unity.xr.management": "4.0.1",
         "com.unity.modules.androidjni": "1.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0"
@@ -112,29 +113,29 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.arfoundation": {
-      "version": "4.1.10",
+      "version": "4.1.13",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.xr.arsubsystems": "4.1.10",
+        "com.unity.xr.arsubsystems": "4.1.13",
         "com.unity.xr.management": "4.0.1",
         "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.arkit": {
-      "version": "4.1.10",
+      "version": "4.1.13",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.editorcoroutines": "1.0.0",
-        "com.unity.xr.arsubsystems": "4.1.10",
+        "com.unity.xr.arsubsystems": "4.1.13",
         "com.unity.xr.management": "4.0.1"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.arsubsystems": {
-      "version": "4.1.10",
+      "version": "4.1.13",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -143,7 +144,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.legacyinputhelpers": {
-      "version": "2.1.9",
+      "version": "2.1.8",
       "depth": 2,
       "source": "registry",
       "dependencies": {

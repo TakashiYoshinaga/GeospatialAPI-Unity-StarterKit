@@ -19,9 +19,11 @@
 namespace AR_Fukuoka
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using Google.XR.ARCoreExtensions;
     using UnityEngine;
+    using UnityEngine.Android;
     using UnityEngine.UI;
     using UnityEngine.XR.ARFoundation;
     using UnityEngine.XR.ARSubsystems;
@@ -52,6 +54,8 @@ namespace AR_Fukuoka
         public bool IsReady { get { return _isReady; } }
 
         public bool _lockScreenToPortrait = true;
+
+        private IEnumerator _startLocationService = null;
         /// <summary>
         /// Unity's Awake() method.
         /// </summary>
@@ -80,26 +84,58 @@ namespace AR_Fukuoka
         /// Unity's OnEnable() method.
         /// </summary>
         public void OnEnable()
-        {
+        {       
             _isReturning = false;
             _enablingGeospatial = false;
             _isReady = false;
-
-#if UNITY_IOS
-            Debug.Log("Start location services.");
-            Input.location.Start();
-#endif
+            _startLocationService = StartLocationService();
+            StartCoroutine(_startLocationService);
         }
+        private bool _waitingForLocationService = false;
+        private IEnumerator StartLocationService()
+        {
+            _waitingForLocationService = true;
+#if UNITY_ANDROID
+            if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
+            {
+                Debug.Log("Requesting fine location permission.");
+                Permission.RequestUserPermission(Permission.FineLocation);
+                yield return new WaitForSeconds(3.0f);
+            }
+#endif
 
+            if (!Input.location.isEnabledByUser)
+            {
+                Debug.Log("Location service is disabled by User.");
+                _waitingForLocationService = false;
+                yield break;
+            }
+
+            Debug.Log("Start location service.");
+            Input.location.Start();
+
+            while (Input.location.status == LocationServiceStatus.Initializing)
+            {
+                yield return null;
+            }
+
+            _waitingForLocationService = false;
+            if (Input.location.status != LocationServiceStatus.Running)
+            {
+                Debug.LogWarningFormat(
+                    "Location service ends with {0} status.", Input.location.status);
+                Input.location.Stop();
+            }
+        }
         /// <summary>
         /// Unity's OnDisable() method.
         /// </summary>
         public void OnDisable()
         {
-#if UNITY_IOS
+            StopCoroutine(_startLocationService);
+            _startLocationService = null;
             Debug.Log("Stop location services.");
             Input.location.Stop();
-#endif
         }
 
         /// <summary>
@@ -160,7 +196,12 @@ namespace AR_Fukuoka
 
             // Check earth state.
             var earthState = EarthManager.EarthState;
-            if (earthState != EarthState.Enabled)
+            if (earthState == EarthState.ErrorEarthNotReady)
+            {
+                ReturnWithReason( "Initializing Geospatial functionalities.");
+                return;
+            }
+            else if (earthState != EarthState.Enabled)
             {
                 ReturnWithReason(
                     "Geospatial sample encountered an EarthState error: " + earthState);
@@ -168,13 +209,8 @@ namespace AR_Fukuoka
             }
 
             // Check earth localization.
-#if UNITY_IOS
             bool isSessionReady = ARSession.state == ARSessionState.SessionTracking &&
                 Input.location.status == LocationServiceStatus.Running;
-#else
-            bool isSessionReady = ARSession.state == ARSessionState.SessionTracking;
-#endif
-
             //If the process can reach this line and isSessionReady is true, the GeospatialAPI is available
             _isReady = isSessionReady;
         }
@@ -214,14 +250,12 @@ namespace AR_Fukuoka
                     "Please start the app again.",
                     ARSession.state);
             }
-#if UNITY_IOS
             else if (Input.location.status == LocationServiceStatus.Failed)
             {
                 returningReason =
                     "Geospatial sample failed to start location service.\n" +
                     "Please start the app again and grant precise location permission.";
             }
-#endif
             else if (ARCoreExtensions == null)
             {
                 returningReason = string.Format(

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44407967, g: 0.49333012, b: 0.57239825, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -643,6 +643,7 @@ MonoBehaviour:
   Latitude: 33.59332844932477
   Longitude: 130.401830494363
   Altitude: 34
+  ForcePutOnTerrain: 1
   Heading: 0
   ContentPrefab: {fileID: 2319386834228601735, guid: 8c70dd7df44b24ace8956778faa97d84, type: 3}
   AnchorManager: {fileID: 280134619}

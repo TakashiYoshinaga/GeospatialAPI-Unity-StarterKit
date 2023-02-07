@@ -9,7 +9,7 @@ The latitude, longitude, altitude, and azimuth of your smartphone and the accura
 
 ### 1-PlacingObjectAt_LatLngAlt
 Show a object with AR at the latitude, longitude, and altitude specified on the Inspector in UnityEditor.<br>
-For Altitude, you can choose manual input or rerrain provided by Geospatial API.<br>
+For Altitude, you can choose manual input or terrain provided by Geospatial API.<br>
 <img src="https://github.com/TakashiYoshinaga/GeospatialAPI-Unity-StarterKit/raw/AR_Fukuoka-20220604/Materials/1-demo.png" width="320" />
 
 ### 2-TapToPlace

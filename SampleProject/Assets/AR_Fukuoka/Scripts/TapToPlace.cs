@@ -126,7 +126,7 @@ namespace AR_Fukuoka
                 }
 
                 //保存
-                GeospatialAnchorHistory history = new GeospatialAnchorHistory(pose.Latitude, pose.Longitude, pose.Altitude, pose.EunRotation);
+                GeospatialAnchorHistory history = new GeospatialAnchorHistory(DateTime.Now,pose.Latitude,pose.Longitude,pose.Altitude,AnchorType.Terrain, pose.EunRotation);
                 PlayerPrefs.SetString(positionKey, JsonUtility.ToJson(displayObjTransform.localPosition));
                 PlayerPrefs.SetString(anchorKey, JsonUtility.ToJson(history));
                 PlayerPrefs.Save();

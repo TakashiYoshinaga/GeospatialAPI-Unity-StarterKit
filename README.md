@@ -1,7 +1,7 @@
 # ARCore GeospatialAPI Unity StarterKit
 ## SDK
-This sample project is compatible with ARCore Extensions for AR Foundation v1.35.0. <br>
-https://github.com/google-ar/arcore-unity-extensions/releases/tag/v1.35.0
+This sample project is compatible with ARCore Extensions for AR Foundation v1.37.0. <br>
+[https://github.com/google-ar/arcore-unity-extensions/releases/tag/v1.35.0](https://github.com/google-ar/arcore-unity-extensions/releases/tag/1.37.0)
 ## SampleScenes
 ### 0-TrackingStateMonitoring
 The latitude, longitude, altitude, and azimuth of your smartphone and the accuracy of these are displayed on a screen.<br>

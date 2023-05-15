@@ -92,13 +92,14 @@ namespace AR_Fukuoka
             StartCoroutine(_startLocationService);
         }
         private bool _waitingForLocationService = false;
+        
         private IEnumerator StartLocationService()
         {
             _waitingForLocationService = true;
 #if UNITY_ANDROID
             if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
             {
-                Debug.Log("Requesting fine location permission.");
+                Debug.Log("Requesting the fine location permission.");
                 Permission.RequestUserPermission(Permission.FineLocation);
                 yield return new WaitForSeconds(3.0f);
             }
@@ -106,12 +107,12 @@ namespace AR_Fukuoka
 
             if (!Input.location.isEnabledByUser)
             {
-                Debug.Log("Location service is disabled by User.");
+                Debug.Log("Location service is disabled by the user.");
                 _waitingForLocationService = false;
                 yield break;
             }
 
-            Debug.Log("Start location service.");
+            Debug.Log("Starting location service.");
             Input.location.Start();
 
             while (Input.location.status == LocationServiceStatus.Initializing)
@@ -123,7 +124,7 @@ namespace AR_Fukuoka
             if (Input.location.status != LocationServiceStatus.Running)
             {
                 Debug.LogWarningFormat(
-                    "Location service ends with {0} status.", Input.location.status);
+                    "Location service ended with {0} status.", Input.location.status);
                 Input.location.Stop();
             }
         }
@@ -163,7 +164,7 @@ namespace AR_Fukuoka
                 case FeatureSupported.Unknown:
                     return;
                 case FeatureSupported.Unsupported:
-                    ReturnWithReason("Geospatial API is not supported by this devices.");
+                    ReturnWithReason("The Geospatial API is not supported by this device.");
                     return;
                 case FeatureSupported.Supported:
                     if (ARCoreExtensions.ARCoreExtensionsConfig.GeospatialMode ==
@@ -172,6 +173,8 @@ namespace AR_Fukuoka
                         Debug.Log("Geospatial sample switched to GeospatialMode.Enabled.");
                         ARCoreExtensions.ARCoreExtensionsConfig.GeospatialMode =
                             GeospatialMode.Enabled;
+                        ARCoreExtensions.ARCoreExtensionsConfig.StreetscapeGeometryMode =
+                            StreetscapeGeometryMode.Enabled;
                         _configurePrepareTime = 3.0f;
                         _enablingGeospatial = true;
                         return;
@@ -180,7 +183,7 @@ namespace AR_Fukuoka
                     break;
             }
 
-            // Waiting for new configuration taking effect.
+            // Waiting for new configuration to take effect.
             if (_enablingGeospatial)
             {
                 _configurePrepareTime -= Time.deltaTime;
@@ -198,13 +201,13 @@ namespace AR_Fukuoka
             var earthState = EarthManager.EarthState;
             if (earthState == EarthState.ErrorEarthNotReady)
             {
-                ReturnWithReason( "Initializing Geospatial functionalities.");
                 return;
             }
             else if (earthState != EarthState.Enabled)
             {
-                ReturnWithReason(
-                    "Geospatial sample encountered an EarthState error: " + earthState);
+                string errorMessage =
+                    "Geospatial sample encountered an EarthState error: " + earthState;
+                Debug.LogWarning(errorMessage);
                 return;
             }
 
@@ -247,19 +250,19 @@ namespace AR_Fukuoka
             {
                 returningReason = string.Format(
                     "Geospatial sample encountered an ARSession error state {0}.\n" +
-                    "Please start the app again.",
+                    "Please restart the app.",
                     ARSession.state);
             }
             else if (Input.location.status == LocationServiceStatus.Failed)
             {
                 returningReason =
                     "Geospatial sample failed to start location service.\n" +
-                    "Please start the app again and grant precise location permission.";
+                    "Please restart the app and grant the fine location permission.";
             }
             else if (ARCoreExtensions == null)
             {
                 returningReason = string.Format(
-                    "Geospatial sample failed with missing AR Components.");
+                    "Geospatial sample failed due to missing AR Components.");
             }
 
             ReturnWithReason(returningReason);

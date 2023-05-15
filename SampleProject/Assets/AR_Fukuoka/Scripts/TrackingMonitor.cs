@@ -21,7 +21,7 @@ namespace AR_Fukuoka
 
         // Update is called once per frame
         void Update()
-        {        
+        { 
             //Return if initialization failed or tracking is not available
             if (!Initializer.IsReady || EarthManager.EarthTrackingState != TrackingState.Tracking)
             {

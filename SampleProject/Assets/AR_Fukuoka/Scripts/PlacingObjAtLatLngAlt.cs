@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Google.XR.ARCoreExtensions;
 using Google.XR.ARCoreExtensions.Samples.Geospatial;
 using UnityEngine;
@@ -79,16 +80,36 @@ namespace AR_Fukuoka
             //https://developers.google.com/ar/develop/unity-arf/geospatial/developer-guide-android#place_a_geospatial_anchor
             Quaternion quaternion = Quaternion.AngleAxis(180f - (float)Heading, Vector3.up);
 
-            //Create an anchor at the specified latitude, longitude, and altitude
-            ARGeospatialAnchor anchor = ForcePutOnTerrain ?
-                AnchorManager.ResolveAnchorOnTerrain(Latitude, Longitude, 0, quaternion) :
-                AnchorManager.AddAnchor(Latitude, Longitude, Altitude, quaternion);
-            
-            //Instantiate the object if the anchor is created successfully
-            if (anchor != null)
+            if(ForcePutOnTerrain){
+                ResolveAnchorOnTerrainPromise terrainPromise =
+                    AnchorManager.ResolveAnchorOnTerrainAsync(Latitude, Longitude, 0, quaternion);
+                    StartCoroutine(CheckTerrainPromise(terrainPromise));
+            }else
             {
-                displayObject = Instantiate(ContentPrefab, anchor.transform);
+                ARGeospatialAnchor anchor = AnchorManager.AddAnchor(Latitude, Longitude, Altitude, quaternion);
+                if (anchor != null)
+                {
+                    displayObject = Instantiate(ContentPrefab, anchor.transform);
+                }
             }
+        }
+        private IEnumerator CheckTerrainPromise(ResolveAnchorOnTerrainPromise promise)
+        {
+            var retry = 0;
+            while (promise.State == PromiseState.Pending)
+            {
+                yield return new WaitForSeconds(0.1f);
+                retry = Math.Min(retry + 1, 100);
+            }
+
+            var result = promise.Result;
+            if (result.TerrainAnchorState == TerrainAnchorState.Success &&
+                result.Anchor != null)
+            {
+                displayObject  = Instantiate(ContentPrefab,result.Anchor.gameObject.transform);
+                displayObject .transform.parent = result.Anchor.gameObject.transform;
+            }
+            yield break;
         }
         void ShowTrackingInfo(string status, GeospatialPose pose)
         {
